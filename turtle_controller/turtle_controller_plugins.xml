@@ -1,0 +1,12 @@
+
+<library path="lib/libturtle_controllers">
+  
+  <class name="turtle_controllers/PoseController"
+    type="turtle_controllers::PoseController"
+    base_class_type="controller_interface::ControllerBase">
+    <description>
+      The pose Controller expects an EffortJointInterface type of hardware interface.
+    </description>
+  </class>
+
+</library>

@@ -1,0 +1,5 @@
+<launch>
+  <node name="turtle_hw_node" pkg="turtle_bringup" type="turtle_main" 
+             respawn="false" output="screen" ns="/Turtle" />
+</launch>
+

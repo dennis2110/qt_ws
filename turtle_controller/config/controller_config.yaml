@@ -1,0 +1,24 @@
+Turtle:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  #turtle_pose_controller:
+  #  type: turtle_controllers/PoseController
+
+  #position_controllers:
+  #  type: JointPositionController
+  #    - base_left_wheel_joint
+  #    - base_right_wheel_joint
+
+  pose_controller:
+    type: turtle_controllers/PoseController
+    wheels:
+      - base_left_wheel_joint
+      - base_right_wheel_joint
+
+  #pose_controller:
+  #  type: effort_controllers/JointPositionController
+  #  joint: base_left_wheel_joint
+  #  pid: {p: 100.0, i: 0.01, d: 10.0}
+

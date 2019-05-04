@@ -1,0 +1,9 @@
+int16 Mission_num
+int16 Action_name1
+int16 Action_name2
+int16 Action_staus1
+int16 Action_staus2
+int16 Action_staus3
+int16 Action_staus4
+---
+int8 ActionDone
