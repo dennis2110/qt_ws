@@ -28,6 +28,7 @@ int main(int argc, char **argv)
     robot.read(now, dt);
     cm.update(now, dt);
     robot.write(now, dt);
+    ros::spinOnce();
     r.sleep();
   }
   spinner.stop();

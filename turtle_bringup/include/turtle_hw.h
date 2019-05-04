@@ -6,6 +6,7 @@
 #include <hardware_interface/robot_hw.h>
 #include <turtlesim/Pose.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/Int16.h>
 
 
 class TurtleRobot : public hardware_interface::RobotHW
@@ -23,6 +24,7 @@ public:
   void write(ros::Time time, ros::Duration period);
 
   void turtle_cmd_callback(const turtlesim::PoseConstPtr _messages);
+  void numcount_callback(const std_msgs::Int16ConstPtr _nummsg);
 
 private:
   hardware_interface::JointStateInterface m_joint_state_interface;
@@ -41,9 +43,15 @@ private:
 
   double l_wheel_vel;
   double r_wheel_vel;
+  double turtle_x;
+  double turtle_y;
+  double turtle_theta;
+
+  int16_t num_cnt;
 
   ros::Subscriber turtle_cmd_sub;
   ros::Publisher turtle_move_pub;
+  ros::Subscriber num_count_sub;
 };
 
 #endif // TURTLE_HW_H

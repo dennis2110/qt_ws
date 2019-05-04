@@ -64,26 +64,40 @@ TurtleRobot::~TurtleRobot() {}
 void TurtleRobot::init(ros::NodeHandle *_node){
   turtle_cmd_sub = _node->subscribe("/turtle1/pose", 1000, &TurtleRobot::turtle_cmd_callback, this);
   turtle_move_pub = _node->advertise<geometry_msgs::Twist>("/turtle1/cmd_vel",100);
+  num_count_sub = _node->subscribe("/numcount",1000, &TurtleRobot::numcount_callback, this);
   ROS_INFO("init turtle robot");
 }
 
 void TurtleRobot::read(ros::Time time, ros::Duration period){
   wheel_vel[0] = l_wheel_vel;
   wheel_vel[1] = r_wheel_vel;
+  wheel_pos[0] = turtle_x;
+  wheel_pos[1] = turtle_y;
+  wheel_eff[0] = turtle_theta;
   ROS_INFO("update L and R wheel to hardward interface");
 }
 
 void TurtleRobot::write(ros::Time time, ros::Duration period){
   geometry_msgs::Twist turtle_twist;
-  turtle_twist.linear.x = (wheel_cmd[0] + wheel_cmd[1])/2;
-  turtle_twist.angular.z= (wheel_cmd[0] - wheel_cmd[1])/2;
+  turtle_twist.linear.x = wheel_cmd[0];
+  turtle_twist.angular.z= wheel_cmd[1];
   turtle_move_pub.publish(turtle_twist);
   ROS_INFO("write L and R wheel to turtlesim");
 }
 
 void TurtleRobot::turtle_cmd_callback(const turtlesim::PoseConstPtr _messages){
-  l_wheel_vel = _messages->linear_velocity + _messages->angular_velocity;
-  r_wheel_vel = _messages->linear_velocity - _messages->angular_velocity;
+  l_wheel_vel = _messages->linear_velocity;
+  r_wheel_vel = _messages->angular_velocity;
+  turtle_x = _messages->x;
+  turtle_y = _messages->y;
+  turtle_theta = _messages->theta;
   ROS_INFO("update turtle velocity to L and R wheel");
+  ROS_INFO("left_vel = %f",l_wheel_vel);
+  ROS_INFO("right_vel= %f",r_wheel_vel);
+}
+
+void TurtleRobot::numcount_callback(const std_msgs::Int16ConstPtr _nummsg){
+  num_cnt = _nummsg->data;
+  ROS_INFO("num_cnt= %d", num_cnt);
 }
 

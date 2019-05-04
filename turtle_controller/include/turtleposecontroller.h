@@ -24,6 +24,7 @@ namespace turtle_controllers
     void starting(const ros::Time& time);
     void stopping(const ros::Time& time);
     bool read_parameter(JointType);
+    void checkRad(double& rad);
 
     // current node
     ros::NodeHandle m_node;
@@ -35,6 +36,11 @@ namespace turtle_controllers
     hardware_interface::JointStateInterface* m_turtle_state;
     hardware_interface::JointStateHandle m_l_turtle_state;
     hardware_interface::JointStateHandle m_r_turtle_state;
+
+    //position control
+    double goalX = 5.0;
+    double goalY = 5.0;
+    double goalTheta = 0.0;
 
   private:
     hardware_interface::JointHandle joint_;

@@ -26,10 +26,20 @@ bool turtle_controllers::PoseController::init(hardware_interface::EffortJointInt
 }
 
 void turtle_controllers::PoseController::update(const ros::Time &time, const ros::Duration &period){
-  double a = m_left_wheel.getVelocity();
-  ROS_INFO("get %f", a);
-  m_left_wheel.setCommand(10);
-  m_right_wheel.setCommand(0);
+  double nowX = m_left_wheel.getPosition();
+  double nowY = m_right_wheel.getPosition();
+  double nowTheta = m_left_wheel.getEffort();
+  double rho,theta,alpha,beta,phi;
+  rho = sqrt(pow((nowX-goalX),2)+pow((nowY-goalY),2));
+  theta = static_cast<double>(atan2(nowY-goalY,nowX-goalX));
+  phi = static_cast<double>(nowTheta);
+  alpha = theta + M_PIf64 -phi;
+  beta = -alpha -phi;
+  turtle_controllers::PoseController::checkRad(alpha);
+  turtle_controllers::PoseController::checkRad(beta);
+  std::cout << rho <<"\t" << theta <<"\t" << phi<<"\t" <<alpha<<"\t" <<beta<<"\t" <<nowX<<"\t" <<nowY<<"\t" <<0.5 * rho<<"\t" <<2*alpha-0.2*beta<<std::endl;
+  m_left_wheel.setCommand(0.5 * rho);
+  m_right_wheel.setCommand(2*alpha - 0.2*beta);
 
   return;
 }
@@ -92,5 +102,13 @@ bool turtle_controllers::PoseController::read_parameter(JointType _type){
 return true;
 }
 
+void turtle_controllers::PoseController::checkRad(double &rad){
+  if(rad > M_PIf64){
+    rad = rad - (2*M_PIf64);
+  }
+  if(rad < -M_PIf64){
+    rad = (2*M_PIf64) + rad;
+  }
+}
 
 PLUGINLIB_EXPORT_CLASS(turtle_controllers::PoseController, controller_interface::ControllerBase)
