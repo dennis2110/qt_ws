@@ -17,7 +17,6 @@ namespace turtle_controllers
   public:
     PoseController();
     ~PoseController();
-
     bool init(hardware_interface::EffortJointInterface* robot, ros::NodeHandle &n);
     void update(const ros::Time& time, const ros::Duration& period);
 
